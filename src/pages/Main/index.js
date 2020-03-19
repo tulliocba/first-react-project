@@ -16,6 +16,25 @@ export default class Main extends Component {
         loading: false,
     };
 
+    // Método chamado quando o componente é inicializado
+    componentDidMount() {
+        const repositories = localStorage.getItem('repositories');
+
+        if (repositories) {
+            this.setState({ repositories: JSON.parse(repositories) });
+        }
+    }
+
+    // Método chamado quando existe atualização no estado, ele acessa
+    // propriedades e estados antigo
+    componentDidUpdate(_, previousState) {
+        const { repositories } = this.state;
+
+        if (previousState.repositories !== repositories) {
+            localStorage.setItem('repositories', JSON.stringify(repositories));
+        }
+    }
+
     handleInputChange = e => {
         this.setState({ newRepo: e.target.value });
     };
@@ -66,7 +85,7 @@ export default class Main extends Component {
                     {repositories.map(repository => (
                         <li key={repository.name}>
                             <span>{repository.name}</span>
-                            <a href="">Detalhe</a>
+                            <a href={() => {}}>Detalhe</a>
                         </li>
                     ))}
                 </List>
